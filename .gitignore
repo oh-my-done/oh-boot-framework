@@ -1,0 +1,16 @@
+.idea/
+*.iml
+.DS_Store
+oh-druid-boot/target/
+oh-example-boot/target/
+oh-execl-boot/target/
+oh-security-boot/target/
+oh-swagger-boot/target/
+oh-common-boot/target/
+oh-pay-boot/target/
+oh-stater-boot/target/
+oh-swagger-ui/target/
+*.log
+docs.txt
+ignore.txt
+.config

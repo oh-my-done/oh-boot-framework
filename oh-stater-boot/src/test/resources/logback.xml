@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 输出日志到控制台 -->
+    <appender
+            name="STDOUT"
+            class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <!--控制台输出-->
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <!--设置我们项目的日志级别为INFO-->
+    <logger name="com.gizwits" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <!--设置 apache 的日志为ERROR-->
+    <logger name="org.apache">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.thymeleaf">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="springfox.documentation">
+        <level value="ERROR"/>
+    </logger>
+    <!-- druid数据源配置打印日志 start-->
+    <logger name="druid.sql">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.DataSource">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.Connection">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.Statement">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.ResultSet">
+        <level value="ERROR"/>
+    </logger>
+</configuration>

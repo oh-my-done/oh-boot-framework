@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_HOME" value="${basehome:-..}/logs"/>
+    <!-- 输出日志到控制台 -->
+    <appender
+            name="STDOUT"
+            class="ch.qos.logback.core.ConsoleAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <encoder charset="UTF-8">
+            <pattern>[%level] %d{yyyy/MM/dd-HH:mm:ss} [%thread] TTL=%r %logger{36} [%c : %line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="rollingFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <param name="Encoding" value="UTF-8"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>spring.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>[%level] %d{yyyy/MM/dd-HH:mm:ss} [%thread] TTL=%r %logger{36} [%c : %line] - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="info">
+        <appender-ref ref="rollingFile"/>
+    </root>
+    <!--设置我们项目的日志级别为INFO-->
+    <logger name="com.gizwits" level="INFO" additivity="false">
+        <appender-ref ref="rollingFile"/>
+    </logger>
+    <!--设置 apache 的日志为ERROR-->
+    <logger name="org.apache">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.springframework">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.thymeleaf">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="org.hibernate">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="springfox.documentation">
+        <level value="ERROR"/>
+    </logger>
+    <!-- druid数据源配置打印日志 start-->
+    <logger name="druid.sql">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.DataSource">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.Connection">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.Statement">
+        <level value="ERROR"/>
+    </logger>
+    <logger name="druid.sql.ResultSet">
+        <level value="ERROR"/>
+    </logger>
+</configuration>
