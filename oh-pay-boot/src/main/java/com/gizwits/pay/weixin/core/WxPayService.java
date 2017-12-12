@@ -78,7 +78,7 @@ public class WxPayService {
     /**
      * 统一下单构建请求参数
      *
-     * @return Map<String,String>
+     * @return Map<String       ,       String>
      */
     private Map<String, String> build() {
 
@@ -89,11 +89,10 @@ public class WxPayService {
             map.put("sub_appid", wxPayApiConfig.getSubAppId());
         }
 
-
         map.put("appid", wxPayApiConfig.getAppId());
         map.put("mch_id", wxPayApiConfig.getMchId());
-        map.put("nonce_str", wxPayApiConfig.getNonceStr());
-        map.put("sign", WxPaySignature.sign(map, wxPayApiConfig.getPaternerSecret()));
+        map.put("nonce_str", String.valueOf(System.currentTimeMillis()));
+
         map.put("body", wxPayApiConfig.getBody());
         map.put("detail", wxPayApiConfig.getDetail());
 
@@ -119,7 +118,7 @@ public class WxPayService {
         }
 
         map.put("notify_url", wxPayApiConfig.getNotifyUrl());
-
+        map.put("sign", WxPaySignature.sign(map, wxPayApiConfig.getPaternerSecret()));
 
         return map;
     }

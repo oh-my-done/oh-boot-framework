@@ -108,6 +108,9 @@ public final class CommonUtils {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip))
             ip = request.getRemoteAddr();
+        if (ip.equalsIgnoreCase("0:0:0:0:0:0:0:1")) {
+            ip = "127.0.0.1";
+        }
         return ip;
     }
 
