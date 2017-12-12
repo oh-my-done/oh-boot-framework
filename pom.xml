@@ -18,7 +18,7 @@
     </modules>
     <packaging>pom</packaging>
 
-    <name>oh-boot-frameworkt</name>
+    <name>oh-boot-framework</name>
     <url>http://maven.apache.org</url>
     <parent>
         <groupId>org.springframework.boot</groupId>
