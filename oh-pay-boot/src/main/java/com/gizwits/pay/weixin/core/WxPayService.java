@@ -192,7 +192,8 @@ public class WxPayService {
             packageParams.put("appid", wxPayApiConfig.getAppId());
             packageParams.put("partnerid", wxPayApiConfig.getMchId());
             packageParams.put("prepayid", prepayId);
-            packageParams.put("noncestr", System.currentTimeMillis() + "");
+            packageParams.put("package", "Sign=WXPay");
+            packageParams.put("noncestr", String.valueOf(System.currentTimeMillis()));
             packageParams.put("timestamp", String.valueOf(System.currentTimeMillis()).substring(0, 10));//10 位固定长度
             packageParams.put("sign", WxPaySignature.sign(packageParams, wxPayApiConfig.getPaternerSecret()));
             AppPayRequest appPayRequest = CommonUtils.mapToBean(packageParams, AppPayRequest.class);
