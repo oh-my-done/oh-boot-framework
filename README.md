@@ -110,7 +110,7 @@ retrofit+okhttp。 对应api请求格式的(如机智云企业api)我们使用sp
 
 ###  安全认证
 
-* 前端端分离权限系统
+* 前后端分离权限系统
 
 推荐使用 security+jwt架构
 
@@ -133,7 +133,7 @@ retrofit+okhttp。 对应api请求格式的(如机智云企业api)我们使用sp
 AccessToken字符串中包含用户信息和权限范围，我们所需的全部信息都有了，所以不需要维护Token存储，资源服务器也不必要求Token检查。
 不需要存储用户状态，权限相关信息，无需共享数据。
 
-2. app和pc能共用同一套认证机制,前后端彻底的分离 
+2. app和pc能共用同一套认证机制,前后端彻底的分离
 
 ###### 疑问
 1. 为什么使用JWT而不是其他的token方式？
@@ -165,8 +165,8 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
 
         return ApiResponse.success((version == null) ? new Profile("1.0") : new Profile(version));
     }
-    
-    
+
+
 ```
 
 
@@ -178,9 +178,9 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
      @ApiOperation(value = "获取菜单树", notes = "获取菜单树", authorizations = {@Authorization("${jwt.header}")})
      @GetMapping(value = "/menus")
      public ApiResponse menus() {
- 
+
          return new ApiResponse(ResponseCode.TOKEN_NOT_EMPTY.getCode(), ResponseCode.TOKEN_NOT_EMPTY.getName());
- 
+
      }
 ````
 
@@ -194,7 +194,7 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
     @GetMapping("/error/mock")
     @ApiOperation(value = "mock数据示例", notes = "mock数据示例")
     public ApiResponse<List<SysStatusCode>> getError() {
-    
+
         //TODD
         return ApiResponse.success(new ModelEntity().resolveBean(new TypeToken<List<SysStatusCode>>() {
         }.getType()));
@@ -220,12 +220,12 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
 
 
 
- 
+
 #### swagger2文档
- 
- 
+
+
  ##### swagger2使用说明
- 
+
  ```
  - swagger2使用说明：
     - @Api：用在类上，说明该类的作用
@@ -252,15 +252,15 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
     - @ApiModel：描述一个Model的信息（这种一般用在post创建的时候，使用@RequestBody这样的场景，请求参数无法使用@ApiImplicitParam注解进行描述的时候）
     - @ApiModelProperty：描述一个model的属性
  ```  
-  
-  
+
+
   ##### 注解使用方式
-  
+
   在项目启动类上标注`@EnableSwagge2Doc` 注解
-  
-  
+
+
   ##### 默认配置
-   
+
    ```
    swagger.enabled=是否启用swagger，默认：true
    swagger.title=标题
@@ -284,12 +284,12 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
    swagger.globalOperationParameters[0].modelRef=指定参数类型
    swagger.globalOperationParameters[0].parameterType=指定参数存放位置,可选header,query,path,body.form
    swagger.globalOperationParameters[0].required=指定参数是否必传，true,false
-   
+
    ```
-   
-   
+
+
   ##### 分组配置
-  
+
    ```
    swagger.docket.<name>.title=标题
    swagger.docket.<name>.description=描述
@@ -314,11 +314,11 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
    swagger.docket.<name>.globalOperationParameters[0].description=描述信息
    swagger.docket.<name>.globalOperationParameters[0].modelRef=指定参数存放位置,可选header,query,path,body.form
    swagger.docket.<name>.globalOperationParameters[0].parameterType=指定参数是否必传，true,false
-   
+
    ```
-   
+
    ##### 分组使用案例
-   
+
    ```
    swagger.enabled=true
    swagger.docket.a.title=swagger
@@ -332,13 +332,13 @@ JWT的一个不好地方就是。当你的资源或者权限相关的信息也�
    swagger.docket.a.exclude-path=/error, /ops/**
    swagger.docket.a.enabledSecurity=true
    swagger.docket.a.header[0]=access_token
-   
+
   ```
-  
+
 注意配置文件中文乱码的问题使用native2ascii进行转换.swagger参考开源实现,增加了安全认证。
-   
-   
-   
+
+
+
 
 
 ###  docker部署
@@ -363,7 +363,7 @@ framework:
   volumes:
       - ./data:/data
   restart: always
-      
+
 ```
 
 
@@ -378,7 +378,7 @@ mvn -e -DskipTests=true clean package
 ### 代码提交
 
 开发人员在代码提交之前确保代码是可以编译通过运行，不可提交不可运行的代码。通过如下命令检查
- 
+
 ```
 
 mvn -e -DskipTests=true clean package
@@ -406,7 +406,7 @@ mvn -e -DskipTests=true clean package
  */
 ```
 
- 
+
 * [阿里巴巴java编程规范](docs/阿里巴巴java编程规范2017版.pdf)
 * [Googlejava编程规范](docs/google-java-styleguide-zh.pdf)
 
