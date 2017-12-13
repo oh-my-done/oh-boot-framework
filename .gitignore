@@ -1,5 +1,6 @@
 .idea/
 *.iml
+.git/
 .DS_Store
 oh-druid-boot/target/
 oh-example-boot/target/
