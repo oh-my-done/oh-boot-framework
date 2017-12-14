@@ -14,6 +14,7 @@ import java.util.Date;
 public class ErrorData {
     private Date timestamp = new Date();
     private String path;
+
     public ErrorData(String path) {
         this.path = path;
     }

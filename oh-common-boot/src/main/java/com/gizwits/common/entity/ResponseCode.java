@@ -33,7 +33,7 @@ public enum ResponseCode {
     LOGIN_PASSWORD_ERROR(9011, "密码错误"),
     SQLEXCEPTION(9020, "数据库操作异常"),
     EXCEPTION(9021, "自定义异常"),
-
+    NOTVALIDEXCEPTION(9022, "参数验证失败"),
     INVALID_ERROR(9050, "非法格式"),
     INVALID_EMPTY(9051, "内容为空"),
 
@@ -60,12 +60,11 @@ public enum ResponseCode {
     ORDER_SUCCESS(9091, "订单下单成功"),
     ORDER_ERROR(9092, "订单下单失败"),
     ORDER_NOT_FOUND(9093, "订单不存在"),
-    ORDER_PAY_ERROR(9094, "订单支付失败,已回滚"),
+    ORDER_PAY_ERROR(9094, "订单支付失败,已回滚");
 
     /**
      * code=[9161-9180]
      */
-    MEAL_NOT_FOUND(9161, "套餐不存在");
 
     /**
      * code=[9181-9200]

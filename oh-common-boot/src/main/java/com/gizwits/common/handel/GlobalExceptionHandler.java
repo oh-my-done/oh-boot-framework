@@ -5,6 +5,7 @@ import com.gizwits.common.entity.ErrorData;
 import com.gizwits.common.entity.ResponseCode;
 import com.gizwits.common.exception.ParameterException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -51,6 +52,9 @@ public class GlobalExceptionHandler {
             apiResponse.setCode(ResponseCode.EXCEPTION.getCode());
             apiResponse.setMessage(e.getMessage());
             log.error("ParameterException:{}", e);
+        } else if (e instanceof MethodArgumentNotValidException) {
+            apiResponse.setCode(ResponseCode.NOTVALIDEXCEPTION.getCode());
+            apiResponse.setMessage(((MethodArgumentNotValidException) e).getBindingResult().getFieldError().getDefaultMessage());
         } else {
             ResponseCode responseCode = ResponseCode.getResponseCode(e.getMessage());
             if (responseCode != null) {
