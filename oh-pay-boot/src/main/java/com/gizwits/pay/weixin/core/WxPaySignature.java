@@ -102,7 +102,7 @@ public class WxPaySignature {
      */
     public static Boolean verify(Map<String, String> params, String signKey) {
         String sign = sign(params, signKey);
-        return sign.equals(params.get("sign"));
+        return sign.equalsIgnoreCase(params.get("sign"));
     }
 
     /**

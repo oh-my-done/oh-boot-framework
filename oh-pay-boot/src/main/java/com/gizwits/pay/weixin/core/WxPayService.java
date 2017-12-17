@@ -38,12 +38,14 @@ public class WxPayService {
     public AppPayRequest prePay(PayRequest payRequest) {
 
         wxPayApiConfig.setSpbillCreateIp(payRequest.getIp());
-        wxPayApiConfig.setTotalFee(MoneyUtil.Yuan2Fen(payRequest.getOrderAmount()));//元转分
+        //元转分
+        wxPayApiConfig.setTotalFee(MoneyUtil.Yuan2Fen(payRequest.getOrderAmount()));
         wxPayApiConfig.setTradeType(TradeType.APP);
         wxPayApiConfig.setOutTradeNo(payRequest.getOutTradeNo());
         wxPayApiConfig.setDetail(payRequest.getDetail());
         wxPayApiConfig.setBody(payRequest.getBody());
         wxPayApiConfig.setAttach(payRequest.getAttach());
+
 
         /**
          * 构建请求参数
@@ -78,7 +80,7 @@ public class WxPayService {
     /**
      * 统一下单构建请求参数
      *
-     * @return Map<String       ,       String>
+     * @return
      */
     private Map<String, String> build() {
 
@@ -89,10 +91,10 @@ public class WxPayService {
             map.put("sub_appid", wxPayApiConfig.getSubAppId());
         }
 
+
         map.put("appid", wxPayApiConfig.getAppId());
         map.put("mch_id", wxPayApiConfig.getMchId());
         map.put("nonce_str", String.valueOf(System.currentTimeMillis()));
-
         map.put("body", wxPayApiConfig.getBody());
         map.put("detail", wxPayApiConfig.getDetail());
 
@@ -126,6 +128,9 @@ public class WxPayService {
 
     /**
      * 查询订单
+     *
+     * @param payRequest
+     * @return
      */
     public WxPayAsyncResponse queryOrder(PayRequest payRequest) {
 
@@ -157,13 +162,13 @@ public class WxPayService {
             map.put("sub_appid", wxPayApiConfig.getSubAppId());
         }
 
-        if (StringUtils.isNotBlank(wxPayApiConfig.getTransactionId())) {
+        if (StringUtils.isNotBlank(payRequest.getTransactionId())) {
             map.put("transaction_id", payRequest.getTransactionId());
         } else {
             if (StringUtils.isBlank(payRequest.getOutTradeNo())) {
                 throw new PayIllegalArgumentException("out_trade_no,transaction_id 不能同时为空");
             }
-            map.put("out_trade_no", wxPayApiConfig.getOutTradeNo());
+            map.put("out_trade_no", payRequest.getOutTradeNo());
         }
 
         map.put("appid", wxPayApiConfig.getAppId());
@@ -193,12 +198,12 @@ public class WxPayService {
             packageParams.put("partnerid", wxPayApiConfig.getMchId());
             packageParams.put("prepayid", prepayId);
             packageParams.put("package", "Sign=WXPay");
-            packageParams.put("noncestr", String.valueOf(System.currentTimeMillis()));
-            packageParams.put("timestamp", String.valueOf(System.currentTimeMillis()).substring(0, 10));//10 位固定长度
+            packageParams.put("noncestr", System.currentTimeMillis() + "");
+            //10 位固定长度
+            packageParams.put("timestamp", String.valueOf(System.currentTimeMillis()).substring(0, 10));
             packageParams.put("sign", WxPaySignature.sign(packageParams, wxPayApiConfig.getPaternerSecret()));
             AppPayRequest appPayRequest = CommonUtils.mapToBean(packageParams, AppPayRequest.class);
             appPayRequest.setPackInfo("Sign=WXPay");
-
             return appPayRequest;
         }
 
@@ -217,21 +222,34 @@ public class WxPayService {
         map.put("appid", response.getAppId());
         map.put("mch_id", response.getMchId());
         map.put("sub_mch_id", response.getSubMchId());
-        map.put("attach", response.getAttach());////用自己系统的数据
+        //用自己系统的数据
+        map.put("attach", response.getAttach());
+        map.put("device_info", response.getDeviceInfo());
+        map.put("return_msg", response.getReturnMsg());
         map.put("bank_type", response.getBankType());
         map.put("fee_type", response.getFeeType());
         map.put("is_subscribe", response.getIsSubscribe());
         map.put("nonce_str", response.getNonceStr());
         map.put("openid", response.getOpenid());
         map.put("out_trade_no", response.getOutTradeNo());
+
         map.put("result_code", response.getResultCode());
         map.put("return_code", response.getReturnCode());
-        map.put("sign", response.getSign());
+        map.put("cash_fee", response.getCashFee());
+        map.put("cash_fee_type", response.getCashFeeType());
+        map.put("coupon_fee", response.getCouponFee());
+        map.put("coupon_count", response.getCouponCount());
+
+        map.put("err_code", response.getErrCode());
+        map.put("err_code_des", response.getErrCodeDes());
+
         map.put("time_end", response.getTimeEnd());
-        map.put("total_fee", String.valueOf(response.getTotalFee()));//用自己系统的数据：订单金额
+        //用自己系统的数据：订单金额
+        map.put("total_fee", String.valueOf(response.getTotalFee()));
         map.put("trade_type", response.getTradeType());
         map.put("transaction_id", response.getTransactionId());
-
+        //签名
+        map.put("sign", response.getSign());
         return map;
     }
 
@@ -261,7 +279,6 @@ public class WxPayService {
 
         //return_code为SUCCESS的时候
         if (!WxPaySignature.codeIsOK(asyncResponse.getReturnCode())) {
-
             log.error("【微信支付异步通知】发起支付, 微信回调失败.returnCode != ERROE, returnMsg ={} " + asyncResponse.getReturnMsg());
             return null;
         }
@@ -269,8 +286,8 @@ public class WxPayService {
         //获取应用服务器需要的数据进行持久化操作,之后业务数据拿到数据之后通知确认给微信服务端
         if (WxPaySignature.codeIsOK(asyncResponse.getReturnCode())) {
             PayResponse payResponse = new PayResponse();
+            // 分转元
             payResponse.setOrderAmount(MoneyUtil.Fen2Yuan(asyncResponse.getTotalFee()));
-            payResponse.setOutTradeNo(asyncResponse.getOutTradeNo());
             payResponse.setOutTradeNo(asyncResponse.getOutTradeNo());
             payResponse.setTransactionId(asyncResponse.getTransactionId());
             return payResponse;
